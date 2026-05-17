@@ -47,22 +47,22 @@
 </div>
 
 <script>
-  // ── Your Google Sheets CSV export URL ─────────────────────────────────
-  // Sheet must be shared as "Anyone with the link can view"
+
+  
   const SHEET_ID = "1Xo6oSmDzJvRmZ6sibyM34MXb0OlUT-whAIW5sfG_9MY";
   const GID      = "669546549";
   const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
 
-  // ── State ──────────────────────────────────────────────────────────────
-  // pairMap: "SAT A|||SAT B" (sorted) → collision probability value
+  
   let pairMap = {};
 
-  // ── Load & parse CSV ───────────────────────────────────────────────────
+  //parsing and loading
   async function loadData() {
     const box = document.getElementById('risk-box');
     try {
       const res  = await fetch(CSV_URL, { redirect: "follow" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
+      if (!res.ok) 
+      {throw new Error("HTTP " + res.status);}
       const text = await res.text();
 
       const allSatSet = new Set();
@@ -70,12 +70,16 @@
 
       const rows = text.split(/\r?\n/).filter(l => l.trim());
       rows.slice(1).forEach(row => {
-        // Parse CSV (handles quoted fields)
+        
+        //csv parsing
         const cols = [];
         let cur = "", inQ = false;
-        for (const c of row) {
-          if (c === '"') inQ = !inQ;
-          else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ""; }
+        for (const c of row) 
+        {
+          if (c === '"') 
+          { inQ = !inQ; }
+          else if (c === ',' && !inQ) 
+          { cols.push(cur.trim()); cur = ""; }
           else cur += c;
         }
         cols.push(cur.trim());
@@ -88,22 +92,25 @@
         allSatSet.add(s1);
         allSatSet.add(s2);
 
-        // Only store if there is an actual numeric value
-        if (raw !== "") {
+        //checking for collision prob value
+        if (raw !== "") 
+        {
           const val = parseFloat(raw);
-          if (!isNaN(val)) {
-            // Sort names → symmetric: A↔B = B↔A
+          if (!isNaN(val)) 
+          {
+            //order of names does not matter
             const key = [s1, s2].sort().join("|||");
             pairMap[key] = val;
           }
         }
       });
 
-      // Populate datalist
+      //populating dtatlist
       const allSats = [...allSatSet].sort();
       const datalist = document.getElementById('list-sats');
       datalist.innerHTML = "";
-      allSats.forEach(name => {
+      allSats.forEach(name => 
+      {
         const opt = document.createElement('option');
         opt.value = name;
         datalist.appendChild(opt);
@@ -117,14 +124,16 @@
       box.innerText = "SELECT SATELLITES";
       box.className = "bg-grey";
 
-    } catch(e) {
+    } 
+    catch(e) 
+    {
       box.innerText = "ERROR LOADING DATA";
       box.className = "bg-high";
       console.error(e);
     }
   }
 
-  // ── Check risk ─────────────────────────────────────────────────────────
+  //collision risk checking
   function checkRisk() {
     const val1 = document.getElementById('sat1').value.trim();
     const val2 = document.getElementById('sat2').value.trim();
@@ -143,26 +152,28 @@
       return;
     }
 
-    // Symmetric lookup — sort names to match stored key
+    //sorting names to match stored key
     const key  = [val1, val2].sort().join("|||");
     const risk = pairMap[key];
 
-    // No data in the column → show NO DATA FOUND
+    //shows if no collision data is found on csv
     if (risk === undefined || risk === null) {
       box.innerText = "NO DATA FOUND";
       box.className = "bg-grey";
       return;
     }
 
-    // Multiply by 100 to get percentage
-    // 0 → 0%,  1 → 100%,  0.42 → 42%
-    const pct = risk * 100;
+    
+    const pct = risk * 100; // percentage
 
     box.innerText = pct.toFixed(2) + "% COLLISION RISK";
 
-    if      (pct < 33) box.className = "bg-low";
-    else if (pct < 66) box.className = "bg-mid";
-    else               box.className = "bg-high";
+    if(pct < 33) 
+    {box.className = "bg-low";}
+    else if (pct < 66)
+    {box.className = "bg-mid";}
+    else 
+    {box.className = "bg-high";}
   }
 
   // ── Events ─────────────────────────────────────────────────────────────
