@@ -2,28 +2,117 @@
 <html>
 <head>
   <style>
-    body { font-family: -apple-system, system-ui, sans-serif; padding: 20px; background-color: #f0f2f5; color: #3c4043; }
-    .card { max-width: 480px; margin: 40px auto; background: white; padding: 35px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-    h2 { margin-top: 0; color: #1a73e8; font-size: 18px; text-align: center; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
-
-    .input-section { margin-bottom: 25px; }
-    label { display: block; font-size: 11px; font-weight: 700; color: #5f6368; text-transform: uppercase; margin-bottom: 8px; }
-
-    input { width: 100%; padding: 14px; border: 2px solid #dfe1e5; border-radius: 10px; font-size: 16px; box-sizing: border-box; outline: none; }
-    input:focus { border-color: #1a73e8; box-shadow: 0 0 0 3px rgba(26,115,232,0.1); }
-
-    .risk-container { margin-top: 35px; text-align: center; border-top: 1px solid #eee; padding-top: 25px; }
-    #risk-box {
-      padding: 24px; border-radius: 12px; font-size: 20px; font-weight: 900; color: white;
-      text-transform: uppercase; background-color: #bdc1c6; min-height: 40px;
-      transition: background-color 0.2s;
+    body { 
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+      padding: 0; 
+      margin: 0;
+      background-color: #ffffff; 
+      color: #334155; 
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
     }
-    .bg-low  { background-color: #34a853 !important; }
-    .bg-mid  { background-color: #fbbc04 !important; color: #333 !important; }
-    .bg-high { background-color: #ea4335 !important; }
-    .bg-grey { background-color: #bdc1c6 !important; }
 
-    .badge { text-align: center; font-size: 10px; color: #bdc1c6; margin-top: 16px; }
+    .card { 
+      width: 100%;
+      max-width: 420px; 
+      background: transparent; 
+      padding: 20px; 
+      border: none;
+      box-shadow: none;
+    }
+
+    h2 { 
+      margin-top: 0; 
+      color: #0f172a;
+      font-size: 20px; 
+      font-weight: 600;
+      text-align: center; 
+      margin-bottom: 40px; 
+      letter-spacing: -0.3px;
+    }
+
+    .input-section { margin-bottom: 28px; }
+
+    label { 
+      display: block; 
+      font-size: 11px; 
+      font-weight: 600; 
+      color: #64748b;
+      text-transform: uppercase; 
+      margin-bottom: 10px; 
+      letter-spacing: 0.8px;
+    }
+
+    input { 
+      width: 100%; 
+      padding: 14px 16px; 
+      border: 1px solid #cbd5e1; 
+      border-radius: 8px; 
+      font-size: 15px; 
+      box-sizing: border-box; 
+      outline: none; 
+      background-color: #f8fafc;
+      color: #0f172a;
+      transition: all 0.2s ease-in-out;
+    }
+
+    input:focus { 
+      border-color: #2563eb; 
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+
+    .risk-container { 
+      margin-top: 40px; 
+      text-align: center; 
+      border-top: 1px solid #f1f5f9; 
+      padding-top: 35px; 
+    }
+
+    #risk-box {
+      padding: 18px; 
+      border-radius: 8px; 
+      font-size: 14px; 
+      font-weight: 600; 
+      text-transform: uppercase; 
+      letter-spacing: 0.8px;
+      min-height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+    }
+
+    .bg-low  { 
+      background-color: #f0fdf4 !important; 
+      color: #16a34a !important;
+      border: 1px solid #bbf7d0;
+    }
+    .bg-mid  { 
+      background-color: #fffbeb !important; 
+      color: #d97706 !important; 
+      border: 1px solid #fde68a;
+    }
+    .bg-high { 
+      background-color: #fef2f2 !important; 
+      color: #dc2626 !important; 
+      border: 1px solid #fecaca;
+    }
+    .bg-grey { 
+      background-color: #f1f5f9 !important; 
+      color: #94a3b8 !important;
+      border: 1px solid #e2e8f0;
+    }
+
+    .badge { 
+      text-align: center; 
+      font-size: 11px; 
+      color: #94a3b8; 
+      margin-top: 30px; 
+    }
   </style>
 </head>
 <body>
@@ -45,10 +134,9 @@
   </div>
   <div class="badge" id="badge"></div>
 </div>
-
+  
 <script>
 
-  
   const SHEET_ID = "1Xo6oSmDzJvRmZ6sibyM34MXb0OlUT-whAIW5sfG_9MY";
   const GID      = "669546549";
   const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
