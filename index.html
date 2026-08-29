@@ -1,119 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    body { 
-      font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-      padding: 0; 
-      margin: 0;
-      background-color: #ffffff; 
-      color: #334155; 
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-
-    .card { 
-      width: 100%;
-      max-width: 420px; 
-      background: transparent; 
-      padding: 20px; 
-      border: none;
-      box-shadow: none;
-    }
-
-    h2 { 
-      margin-top: 0; 
-      color: #0f172a;
-      font-size: 20px; 
-      font-weight: 600;
-      text-align: center; 
-      margin-bottom: 40px; 
-      letter-spacing: -0.3px;
-    }
-
-    .input-section { margin-bottom: 28px; }
-
-    label { 
-      display: block; 
-      font-size: 11px; 
-      font-weight: 600; 
-      color: #64748b;
-      text-transform: uppercase; 
-      margin-bottom: 10px; 
-      letter-spacing: 0.8px;
-    }
-
-    input { 
-      width: 100%; 
-      padding: 14px 16px; 
-      border: 1px solid #cbd5e1; 
-      border-radius: 8px; 
-      font-size: 15px; 
-      box-sizing: border-box; 
-      outline: none; 
-      background-color: #f8fafc;
-      color: #0f172a;
-      transition: all 0.2s ease-in-out;
-    }
-
-    input:focus { 
-      border-color: #2563eb; 
-      background-color: #ffffff;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-    }
-
-    .risk-container { 
-      margin-top: 40px; 
-      text-align: center; 
-      border-top: 1px solid #f1f5f9; 
-      padding-top: 35px; 
-    }
-
-    #risk-box {
-      padding: 18px; 
-      border-radius: 8px; 
-      font-size: 14px; 
-      font-weight: 600; 
-      text-transform: uppercase; 
-      letter-spacing: 0.8px;
-      min-height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s ease;
-    }
-
-    .bg-low  { 
-      background-color: #f0fdf4 !important; 
-      color: #16a34a !important;
-      border: 1px solid #bbf7d0;
-    }
-    .bg-mid  { 
-      background-color: #fffbeb !important; 
-      color: #d97706 !important; 
-      border: 1px solid #fde68a;
-    }
-    .bg-high { 
-      background-color: #fef2f2 !important; 
-      color: #dc2626 !important; 
-      border: 1px solid #fecaca;
-    }
-    .bg-grey { 
-      background-color: #f1f5f9 !important; 
-      color: #94a3b8 !important;
-      border: 1px solid #e2e8f0;
-    }
-
-    .badge { 
-      text-align: center; 
-      font-size: 11px; 
-      color: #94a3b8; 
-      margin-top: 30px; 
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body {
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 0; margin: 0; background-color: #ffffff; color: #334155;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    box-sizing: border-box;
+  }
+  .card { width: 100%; max-width: 420px; background: transparent; padding: 20px; }
+  h2 {
+    margin-top: 0; color: #0f172a; font-size: 20px; font-weight: 600;
+    text-align: center; margin-bottom: 40px; letter-spacing: -0.3px;
+  }
+  .input-section { margin-bottom: 28px; }
+  label {
+    display: block; font-size: 11px; font-weight: 600; color: #64748b;
+    text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.8px;
+  }
+  input {
+    width: 100%; padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 8px;
+    font-size: 15px; box-sizing: border-box; outline: none;
+    background-color: #f8fafc; color: #0f172a; transition: all 0.2s ease-in-out;
+  }
+  input:focus {
+    border-color: #2563eb; background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  }
+  .risk-container {
+    margin-top: 40px; text-align: center;
+    border-top: 1px solid #f1f5f9; padding-top: 35px;
+  }
+  #risk-box {
+    padding: 18px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.8px; min-height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s ease;
+  }
+  .bg-low   { background-color: #f0fdf4 !important; color: #16a34a !important; border: 1px solid #bbf7d0; }
+  .bg-mid   { background-color: #fffbeb !important; color: #d97706 !important; border: 1px solid #fde68a; }
+  .bg-high  { background-color: #fef2f2 !important; color: #dc2626 !important; border: 1px solid #fecaca; }
+  .bg-grey  { background-color: #f1f5f9 !important; color: #94a3b8 !important; border: 1px solid #e2e8f0; }
+  /* not an error */
+  .bg-clear { background-color: #f8fafc !important; color: #475569 !important; border: 1px solid #e2e8f0; }
+  #detail {
+    margin-top: 14px; font-size: 12px; color: #64748b;
+    line-height: 1.75; min-height: 18px;
+  }
+  #detail .k { color: #94a3b8; }
+  #detail .v { color: #334155; font-variant-numeric: tabular-nums; }
+  .badge { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 30px; }
+  .stamp { text-align: center; font-size: 10px; color: #cbd5e1; margin-top: 6px; }
+</style>
 </head>
 <body>
 <div class="card">
@@ -131,144 +71,223 @@
 
   <div class="risk-container">
     <div id="risk-box" class="bg-grey">LOADING DATA...</div>
+    <div id="detail"></div>
   </div>
+
   <div class="badge" id="badge"></div>
+  <div class="stamp" id="stamp"></div>
 </div>
-  
+
 <script>
+"use strict";
 
-  const SHEET_ID = "1Xo6oSmDzJvRmZ6sibyM34MXb0OlUT-whAIW5sfG_9MY";
-  const GID      = "669546549";
-  const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+// run_analysis.py prints both GIDs when it finishes — paste here.
+// catalog tab keeps every satellite selectable.
 
-  
-  let pairMap = {};
+const SHEET_ID    = "1Xo6oSmDzJvRmZ6sibyM34MXb0OlUT-whAIW5sfG_9MY";
+const RESULTS_GID = "669546549";
+const CATALOG_GID = "PASTE_CATALOG_GID_HERE";
 
-  //parsing and loading
-  async function loadData() {
-    const box = document.getElementById('risk-box');
-    try {
-      const res  = await fetch(CSV_URL, { redirect: "follow" });
-      if (!res.ok) 
-      {throw new Error("HTTP " + res.status);}
-      const text = await res.text();
+// google edge-caches the CSV export and the browser caches it again. 
+// without the timestamp, a sheet updated at 14:00 keeps serving 12:00 numbers.
+const csvUrl = gid =>
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}&_=${Date.now()}`;
 
-      const allSatSet = new Set();
-      pairMap = {};
+const box    = document.getElementById("risk-box");
+const detail = document.getElementById("detail");
+const s1     = document.getElementById("sat1");
+const s2     = document.getElementById("sat2");
 
-      const rows = text.split(/\r?\n/).filter(l => l.trim());
-      rows.slice(1).forEach(row => {
-        
-        //csv parsing
-        const cols = [];
-        let cur = "", inQ = false;
-        for (const c of row) 
-        {
-          if (c === '"') 
-          { inQ = !inQ; }
-          else if (c === ',' && !inQ) 
-          { cols.push(cur.trim()); cur = ""; }
-          else cur += c;
-        }
-        cols.push(cur.trim());
+let pairMap    = {};
+let catalogSet = new Set();
+let ready      = false;
 
-        const s1  = cols[0] || "";
-        const s2  = cols[1] || "";
-        const raw = cols[2] || "";
-        if (!s1 || !s2) return;
+const show = (text, cls) => { box.innerText = text; box.className = cls; };
 
-        allSatSet.add(s1);
-        allSatSet.add(s2);
-
-        //checking for collision prob value
-        if (raw !== "") 
-        {
-          const val = parseFloat(raw);
-          if (!isNaN(val)) 
-          {
-            //order of names does not matter
-            const key = [s1, s2].sort().join("|||");
-            pairMap[key] = val;
-          }
-        }
-      });
-
-      //populating dtatlist
-      const allSats = [...allSatSet].sort();
-      const datalist = document.getElementById('list-sats');
-      datalist.innerHTML = "";
-      allSats.forEach(name => 
-      {
-        const opt = document.createElement('option');
-        opt.value = name;
-        datalist.appendChild(opt);
-      });
-
-      const pairCount = Object.keys(pairMap).length;
-      document.getElementById('badge').textContent =
-        allSats.length.toLocaleString() + " satellites · " +
-        pairCount.toLocaleString() + " pairs with data";
-
-      box.innerText = "SELECT SATELLITES";
-      box.className = "bg-grey";
-
-    } 
-    catch(e) 
-    {
-      box.innerText = "ERROR LOADING DATA";
-      box.className = "bg-high";
-      console.error(e);
+// csv parsing
+function parseCsv(text) {
+  const rows = [];
+  let row = [], cell = "", inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQ) {
+      if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else inQ = false; }
+      else cell += c;
     }
+    else if (c === '"')  inQ = true;
+    else if (c === ',')  { row.push(cell); cell = ""; }
+    else if (c === '\n') { row.push(cell); rows.push(row); row = []; cell = ""; }
+    else if (c !== '\r') cell += c;
+  }
+  if (cell !== "" || row.length) { row.push(cell); rows.push(row); }
+  return rows.filter(r => r.some(v => String(v).trim() !== ""));
+}
+
+// columns are found by header name
+function columnFinder(headers) {
+  const norm = headers.map(h => String(h).trim().toLowerCase());
+  return (...cands) => {
+    for (const c of cands) {
+      const i = norm.indexOf(c.toLowerCase());
+      if (i !== -1) return i;
+    }
+    return -1;
+  };
+}
+
+function num(v) {
+  if (v == null) return null;
+  const s = String(v).trim().replace(/%$/, "");
+  if (s === "") return null;
+  const n = parseFloat(s);
+  return Number.isFinite(n) ? n : null;
+}
+
+const keyFor = (a, b) =>
+  [a.trim().toUpperCase(), b.trim().toUpperCase()].sort().join("|||");
+
+async function fetchCsv(gid) {
+  const res = await fetch(csvUrl(gid), { redirect: "follow", cache: "no-store" });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  return parseCsv(await res.text());
+}
+
+async function loadData() {
+  try {
+    // catalog is optional
+    // if its GID isn't set, fall back to building the dropdown from the results rows.
+    const wantCatalog = CATALOG_GID && !CATALOG_GID.startsWith("PASTE");
+    const [resultRows, catalogRows] = await Promise.all([
+      fetchCsv(RESULTS_GID),
+      wantCatalog ? fetchCsv(CATALOG_GID).catch(() => null) : Promise.resolve(null),
+    ]);
+
+    if (resultRows.length < 2) throw new Error("Results tab is empty");
+
+    const rh   = resultRows[0];
+    const rcol = columnFinder(rh);
+    const cA    = rcol("Sat 1", "Sat A", "Satellite A");
+    const cB    = rcol("Sat 2", "Sat B", "Satellite B");
+    const cDist = rcol("Miss Distance (km)", "Dist (km)", "kalman_min_dist_km");
+    const cTier = rcol("Risk Tier", "risk_tier", "Tier");
+    const cTca  = rcol("TCA (min)", "Time (min)", "time_to_min_minutes");
+    const cPc   = rcol("Pc %", "conjunction_probability");
+    const cTime = rcol("Last Updated", "Updated");
+
+    if (cA === -1 || cB === -1)
+      throw new Error("no satellite-name columns; headers are: " + rh.join(", "));
+
+    pairMap = {};
+    catalogSet = new Set();
+    let stamp = "";
+
+    for (const r of resultRows.slice(1)) {
+      const a = (r[cA] || "").trim(), b = (r[cB] || "").trim();
+      if (!a || !b) continue;
+      catalogSet.add(a);
+      catalogSet.add(b);
+      if (cTime !== -1 && (r[cTime] || "").trim()) stamp = r[cTime].trim();
+      pairMap[keyFor(a, b)] = {
+        dist: cDist === -1 ? null : num(r[cDist]),
+        tier: cTier === -1 ? "" : (r[cTier] || "").trim().toUpperCase(),
+        tca:  cTca  === -1 ? null : num(r[cTca]),
+        pc:   cPc   === -1 ? null : num(r[cPc]),
+      };
+    }
+
+    if (catalogRows && catalogRows.length > 1) {
+      const cN = columnFinder(catalogRows[0])("Name", "Satellite", "sat_name");
+      if (cN !== -1) for (const r of catalogRows.slice(1)) {
+        const nm = (r[cN] || "").trim();
+        if (nm) catalogSet.add(nm);
+      }
+    }
+
+    const names = [...catalogSet].sort();
+    const dl = document.getElementById("list-sats");
+    const frag = document.createDocumentFragment();
+    for (const n of names) {
+      const o = document.createElement("option");
+      o.value = n;
+      frag.appendChild(o);
+    }
+    dl.innerHTML = "";
+    dl.appendChild(frag);
+
+    document.getElementById("badge").textContent =
+      names.length.toLocaleString() + " satellites · " +
+      Object.keys(pairMap).length.toLocaleString() + " flagged pairs";
+    document.getElementById("stamp").textContent =
+      stamp ? "Screening data from " + stamp : "";
+
+    ready = true;
+    checkRisk();
+  } catch (e) {
+    show("ERROR LOADING DATA", "bg-high");
+    detail.textContent = String(e.message || e);
+    console.error(e);
+  }
+}
+
+const BAND = {
+  CRITICAL: "bg-high", DANGER: "bg-high",
+  WARNING: "bg-mid",   MONITOR: "bg-low",
+};
+
+function renderDetail(rec) {
+  const bits = [];
+  if (rec.tca != null) {
+    const h = Math.floor(rec.tca / 60), m = rec.tca % 60;
+    bits.push(`<span class="k">closest approach</span> <span class="v">+${h}h ${m}m</span>`);
+  }
+  // pc is not shown
+  detail.innerHTML = bits.join(" &nbsp;·&nbsp; ");
+}
+
+// before: ui collapsed every "no number" case into "NO DATA FOUND". 
+function checkRisk() {
+  if (!ready) return;
+  const a = s1.value.trim(), b = s2.value.trim();
+  detail.innerHTML = "";
+
+  if (!a || !b) return show("SELECT SATELLITES", "bg-grey");
+  if (a.toUpperCase() === b.toUpperCase()) return show("SAME SATELLITE", "bg-grey");
+
+  const knownA = catalogSet.has(a), knownB = catalogSet.has(b);
+  if (!knownA || !knownB) {
+    show("NOT IN CATALOG", "bg-grey");
+    detail.textContent = "Unrecognised: " +
+      [!knownA && a, !knownB && b].filter(Boolean).join(", ");
+    return;
   }
 
-  //collision risk checking
-  function checkRisk() {
-    const val1 = document.getElementById('sat1').value.trim();
-    const val2 = document.getElementById('sat2').value.trim();
-    const box  = document.getElementById('risk-box');
-    box.className = "";
-
-    if (!val1 || !val2) {
-      box.innerText = "SELECT SATELLITES";
-      box.className = "bg-grey";
-      return;
-    }
-
-    if (val1 === val2) {
-      box.innerText = "SAME SATELLITE";
-      box.className = "bg-high";
-      return;
-    }
-
-    //sorting names to match stored key
-    const key  = [val1, val2].sort().join("|||");
-    const risk = pairMap[key];
-
-    //shows if no collision data is found on csv
-    if (risk === undefined || risk === null) {
-      box.innerText = "NO DATA FOUND";
-      box.className = "bg-grey";
-      return;
-    }
-
-    
-    const pct = risk * 100; // percentage
-
-    box.innerText = pct.toFixed(2) + "% COLLISION RISK";
-
-    if(pct < 33) 
-    {box.className = "bg-low";}
-    else if (pct < 66)
-    {box.className = "bg-mid";}
-    else 
-    {box.className = "bg-high";}
+  const rec = pairMap[keyFor(a, b)];
+  if (!rec) {
+    show("SCREENED · NOT FLAGGED", "bg-clear");
+    detail.textContent = "Evaluated and below the flagging threshold.";
+    return;
   }
 
-  // ── Events ─────────────────────────────────────────────────────────────
-  document.getElementById('sat1').addEventListener('input', checkRisk);
-  document.getElementById('sat2').addEventListener('input', checkRisk);
+  // not a percentage, only a categorized closest approach dist
+  if (rec.dist != null) {
+    const tier = rec.tier || "FLAGGED";
+    show(`${tier} · ${rec.dist.toFixed(2)} KM`, BAND[tier] || "bg-mid");
+    renderDetail(rec);
+    return;
+  }
 
-  loadData();
+  show("NO RESULT RECORDED", "bg-grey");
+}
+
+document.getElementById("sat1").addEventListener("input", checkRisk);
+document.getElementById("sat2").addEventListener("input", checkRisk);
+
+loadData();
+// new run without visitor relaoding
+setInterval(loadData, 5 * 60 * 1000);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") loadData();
+});
 </script>
 </body>
 </html>
