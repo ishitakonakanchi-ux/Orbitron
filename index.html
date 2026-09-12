@@ -235,7 +235,7 @@ function renderDetail(rec) {
   if (rec.dist != null) {
     bits.push(`<span class="k">miss distance</span> <span class="v">${rec.dist.toFixed(2)} km</span>`);
   }
-  // pc shown
+  // pc is not shown
   detail.innerHTML = bits.join(" &nbsp;·&nbsp; ");
 }
 
@@ -263,6 +263,7 @@ function checkRisk() {
     return;
   }
 
+  // not a percentage, only a categorized closest approach dist
   if (rec.dist != null) {
     const tier = rec.tier || "FLAGGED";
     const pct = rec.pc == null ? "" : ` · ${rec.pc.toFixed(2)}%`;
