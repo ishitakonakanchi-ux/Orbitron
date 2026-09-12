@@ -232,11 +232,10 @@ const BAND = {
 
 function renderDetail(rec) {
   const bits = [];
-  if (rec.tca != null) {
-    const h = Math.floor(rec.tca / 60), m = rec.tca % 60;
-    bits.push(`<span class="k">closest approach</span> <span class="v">+${h}h ${m}m</span>`);
+  if (rec.dist != null) {
+    bits.push(`<span class="k">miss distance</span> <span class="v">${rec.dist.toFixed(2)} km</span>`);
   }
-  // pc is not shown
+  // pc shown
   detail.innerHTML = bits.join(" &nbsp;·&nbsp; ");
 }
 
@@ -264,10 +263,10 @@ function checkRisk() {
     return;
   }
 
-  // not a percentage, only a categorized closest approach dist
   if (rec.dist != null) {
     const tier = rec.tier || "FLAGGED";
-    show(`${tier} · ${rec.dist.toFixed(2)} KM`, BAND[tier] || "bg-mid");
+    const pct = rec.pc == null ? "" : ` · ${rec.pc.toFixed(2)}%`;
+    show(`${tier}${pct}`, BAND[tier] || "bg-mid");
     renderDetail(rec);
     return;
   }
