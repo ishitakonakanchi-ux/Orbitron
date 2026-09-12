@@ -81,15 +81,11 @@
 <script>
 "use strict";
 
-// run_analysis.py prints both GIDs when it finishes — paste here.
-// catalog tab keeps every satellite selectable.
-
 const SHEET_ID    = "1Xo6oSmDzJvRmZ6sibyM34MXb0OlUT-whAIW5sfG_9MY";
-const RESULTS_GID = "669546549";
-const CATALOG_GID = "PASTE_CATALOG_GID_HERE";
+const RESULTS_GID = "46987666";
+const CATALOG_GID = "1855238353";
 
 // google edge-caches the CSV export and the browser caches it again. 
-// without the timestamp, a sheet updated at 14:00 keeps serving 12:00 numbers.
 const csvUrl = gid =>
   `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}&_=${Date.now()}`;
 
@@ -123,7 +119,7 @@ function parseCsv(text) {
   return rows.filter(r => r.some(v => String(v).trim() !== ""));
 }
 
-// columns are found by header name
+// columns found by header name
 function columnFinder(headers) {
   const norm = headers.map(h => String(h).trim().toLowerCase());
   return (...cands) => {
