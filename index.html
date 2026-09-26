@@ -53,6 +53,42 @@
   #detail .v { color: #334155; font-variant-numeric: tabular-nums; }
   .badge { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 30px; }
   .stamp { text-align: center; font-size: 10px; color: #cbd5e1; margin-top: 6px; }
+
+  /* priority list */
+  .priority {
+    margin-top: 34px; border-top: 1px solid #f1f5f9; padding-top: 26px;
+  }
+  .priority-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .priority-head span:first-child {
+    font-size: 11px; font-weight: 600; color: #64748b;
+    text-transform: uppercase; letter-spacing: 0.8px;
+  }
+  .priority-head span:last-child { font-size: 10px; color: #cbd5e1; }
+  /* capped height so the embed doesn't grow without bound */
+  #priority-list { max-height: 230px; overflow-y: auto; }
+  .prow {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: 6px; cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: background-color 0.15s ease;
+  }
+  .prow:hover { background-color: #f8fafc; }
+  .prow .tier {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.6px;
+    width: 58px; flex-shrink: 0;
+  }
+  .prow .pair {
+    flex: 1; min-width: 0; font-size: 12px; color: #334155;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .prow .pair em { font-style: normal; color: #cbd5e1; }
+  .t-critical { color: #dc2626; } .r-critical { border-left-color: #fecaca; }
+  .t-danger   { color: #dc2626; } .r-danger   { border-left-color: #fecaca; }
+  .t-warning  { color: #d97706; } .r-warning  { border-left-color: #fde68a; }
+  .t-monitor  { color: #16a34a; } .r-monitor  { border-left-color: #bbf7d0; }
 </style>
 </head>
 <body>
@@ -74,6 +110,14 @@
     <div id="detail"></div>
   </div>
 
+  <div class="priority">
+    <div class="priority-head">
+      <span>Priority conjunctions</span>
+      <span>closest approach first</span>
+    </div>
+    <div id="priority-list"></div>
+  </div>
+
   <div class="badge" id="badge"></div>
   <div class="stamp" id="stamp"></div>
 </div>
@@ -84,6 +128,9 @@
 const SHEET_ID    = "1Xo6oSmDzJvRmZ6sibyM34MXb0OlUT-whAIW5sfG_9MY";
 const RESULTS_GID = "46987666";
 const CATALOG_GID = "1855238353";
+
+// how many rows the priority list shows
+const PRIORITY_COUNT = 15;
 
 // google edge-caches the CSV export and the browser caches it again. 
 const csvUrl = gid =>
@@ -184,6 +231,7 @@ async function loadData() {
       catalogSet.add(b);
       if (cTime !== -1 && (r[cTime] || "").trim()) stamp = r[cTime].trim();
       pairMap[keyFor(a, b)] = {
+        a, b,
         dist: cDist === -1 ? null : num(r[cDist]),
         tier: cTier === -1 ? "" : (r[cTier] || "").trim().toUpperCase(),
         tca:  cTca  === -1 ? null : num(r[cTca]),
@@ -216,6 +264,8 @@ async function loadData() {
     document.getElementById("stamp").textContent =
       stamp ? "Screening data from " + stamp : "";
 
+    renderPriority();
+
     ready = true;
     checkRisk();
   } catch (e) {
@@ -229,6 +279,41 @@ const BAND = {
   CRITICAL: "bg-high", DANGER: "bg-high",
   WARNING: "bg-mid",   MONITOR: "bg-low",
 };
+
+// ranked by closest approach, which is also tier order
+function renderPriority() {
+  const list = document.getElementById("priority-list");
+  list.innerHTML = "";
+
+  const top = Object.values(pairMap)
+    .filter(r => r.dist != null)
+    .sort((x, y) => x.dist - y.dist)
+    .slice(0, PRIORITY_COUNT);
+
+  if (!top.length) {
+    list.innerHTML = '<div class="prow"><span class="pair">No flagged pairs.</span></div>';
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  for (const r of top) {
+    const t = (r.tier || "flagged").toLowerCase();
+    const row = document.createElement("div");
+    row.className = `prow r-${t}`;
+    row.innerHTML =
+      `<span class="tier t-${t}">${r.tier || "FLAGGED"}</span>` +
+      `<span class="pair">${r.a} <em>×</em> ${r.b}</span>`;
+    // clicking fills both boxes and runs the lookup
+    row.addEventListener("click", () => {
+      s1.value = r.a;
+      s2.value = r.b;
+      checkRisk();
+      box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+    frag.appendChild(row);
+  }
+  list.appendChild(frag);
+}
 
 function renderDetail(rec) {
   const bits = [];
