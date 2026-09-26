@@ -113,7 +113,7 @@
   <div class="priority">
     <div class="priority-head">
       <span>Closest approaches</span>
-      <span>closest approach first</span>
+      <span>nearest miss first</span>
     </div>
     <div id="priority-list"></div>
   </div>
@@ -129,8 +129,8 @@ const SHEET_ID    = "1Xo6oSmDzJvRmZ6sibyM34MXb0OlUT-whAIW5sfG_9MY";
 const RESULTS_GID = "46987666";
 const CATALOG_GID = "1855238353";
 
-// how many rows the priority list shows
-const PRIORITY_COUNT = 15;
+// hchose 50 for now
+const PRIORITY_COUNT = 50;
 
 // google edge-caches the CSV export and the browser caches it again. 
 const csvUrl = gid =>
