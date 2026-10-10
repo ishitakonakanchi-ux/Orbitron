@@ -92,4 +92,13 @@ def main(src_path: str, out_path: str) -> int:
     for i, hit in skipped:
         print(f"    cell {i}: {hit}")
     if not skipped:
-        print("  (no
+        print("  (no Colab-only cells found)")
+    print(f"  injected session globals after cell {anchor_at}")
+    return 0
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print(__doc__)
+        sys.exit(2)
+    sys.exit(main(sys.argv[1], sys.argv[2]))
