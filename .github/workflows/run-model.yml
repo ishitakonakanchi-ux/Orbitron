@@ -1,0 +1,43 @@
+name: Run model
+
+on:
+  # 06:00 and 18:00 UTC (for Cron)
+  schedule:
+    - cron: "0 6 * * *"
+    - cron: "0 18 * * *"
+  # test button for running workflow
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - uses: actions/checkout@v4
+     
+      - run: |
+          pip install papermill ipykernel gspread google-auth
+          python -m ipykernel install --user --name python3
+
+      - run: python notebook_modifications.py Orbitron.ipynb runnable.ipynb
+
+      - run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
+
+      - run: papermill runnable.ipynb executed.ipynb --log-output
+
+      - run: python run_analysis.py
+
+      # keep the outputs for 14 days to check bad runs
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: run-${{ github.run_number }}
+          path: |
+            final_risk_output.csv
+            satellites.csv
+            executed.ipynb
+          retention-days: 14
+
+      - if: always()
+        run: rm -f credentials.json
