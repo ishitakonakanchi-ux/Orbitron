@@ -16,15 +16,32 @@ COLAB_MARKERS = (
     "files.download",
 )
 
+# names used but not assigned
+SESSION_GLOBALS = [
+    "# --- injected by notebook_modifications.py: Colab session state ---\n",
+    "import joblib\n",
+    "n_detail_times = len(detail_times)   # 144 at the current 10-min cadence\n",
+    "n_filter_times = 48                  # what the Colab kernel held\n",
+    'print(f"Session globals: n_detail_times={n_detail_times}, '
+    'n_filter_times={n_filter_times}")\n',
+]
+
+# the cell that defines detail_times
+ANCHOR = "all_positions_detail = np.zeros("
+
+
 def is_colab_cell(source: str) -> bool:
     return any(m in source for m in COLAB_MARKERS)
+
 
 def main(src_path: str, out_path: str) -> int:
     with open(src_path) as f:
         nb = json.load(f)
 
+    cells = nb.get("cells", [])
+
     skipped = []
-    for i, cell in enumerate(nb.get("cells", [])):
+    for i, cell in enumerate(cells):
         if cell.get("cell_type") != "code":
             continue
         source = "".join(cell.get("source", []))
@@ -45,20 +62,34 @@ def main(src_path: str, out_path: str) -> int:
         cell["outputs"] = []
         cell["execution_count"] = None
 
+    # find the anchor and insert the missing globals just after it
+    anchor_at = next(
+        (i for i, c in enumerate(cells)
+         if c.get("cell_type") == "code" and ANCHOR in "".join(c.get("source", []))),
+        None,
+    )
+    if anchor_at is None:
+        print(f"ERROR: anchor not found: {ANCHOR}")
+        return 1
+
+    injected = {
+        "cell_type": "code",
+        "metadata": {},
+        "source": SESSION_GLOBALS,
+        "outputs": [],
+        "execution_count": None,
+    }
+    if any("id" in c for c in cells):
+        injected["id"] = "injected-session-globals"
+    cells.insert(anchor_at + 1, injected)
+
     with open(out_path, "w") as f:
         json.dump(nb, f)
 
-    total = sum(1 for c in nb.get("cells", []) if c.get("cell_type") == "code")
+    total = sum(1 for c in cells if c.get("cell_type") == "code")
     print(f"{src_path} -> {out_path}")
     print(f"  code cells: {total}, skipped: {len(skipped)}")
     for i, hit in skipped:
         print(f"    cell {i}: {hit}")
     if not skipped:
-        print("  (no Colab-only cells found)")
-    return 0
-
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print(__doc__)
-        sys.exit(2)
-    sys.exit(main(sys.argv[1], sys.argv[2]))
+        print("  (no
