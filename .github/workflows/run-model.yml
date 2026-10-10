@@ -27,8 +27,8 @@ jobs:
       - env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         run: printf '%s' "$GOOGLE_CREDENTIALS" > credentials.json
-
-      - run: papermill runnable.ipynb executed.ipynb --log-output
+        
+      - run: papermill runnable.ipynb executed.ipynb -p n_filter_times 48 --log-output
 
       - run: python run_analysis.py
 
