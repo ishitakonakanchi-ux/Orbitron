@@ -26,6 +26,11 @@ SESSION_GLOBALS = [
     'n_filter_times={n_filter_times}")\n',
 ]
 
+# prose commented out
+BAD_LINES = (
+    "acceleration of x",
+)
+
 # the cell that defines detail_times
 ANCHOR = "all_positions_detail = np.zeros("
 
@@ -39,6 +44,16 @@ def main(src_path: str, out_path: str) -> int:
         nb = json.load(f)
 
     cells = nb.get("cells", [])
+
+    # comment out the stray prose lines
+    commented_out = []
+    for i, cell in enumerate(cells):
+        if cell.get("cell_type") != "code":
+            continue
+        for k, line in enumerate(cell.get("source", [])):
+            if line.strip() in BAD_LINES:
+                cell["source"][k] = f"# removed by notebook_modifications.py: {line}"
+                commented_out.append((i, line.strip()))
 
     skipped = []
     for i, cell in enumerate(cells):
@@ -93,6 +108,8 @@ def main(src_path: str, out_path: str) -> int:
         print(f"    cell {i}: {hit}")
     if not skipped:
         print("  (no Colab-only cells found)")
+    for i, line in commented_out:
+        print(f"    cell {i}: commented out {line!r}")
     print(f"  injected session globals after cell {anchor_at}")
     return 0
 
